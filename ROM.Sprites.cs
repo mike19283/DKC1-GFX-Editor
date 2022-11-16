@@ -28,6 +28,7 @@ namespace StandAloneGFXDKC1
             }
         }
         public List<Tiles> tiles = new List<Tiles>();
+        public List<byte[]> charArray = new List<byte[]>();
 
         public class Tiles
         {
@@ -74,6 +75,9 @@ namespace StandAloneGFXDKC1
 
         public Bitmap ReadFromSpriteHeader(Int32 address, List<Color> palette, bool preview = false)
         {
+            //FIXME
+            //return null;
+
             // Save base for later
             baseAddress = address;
 
@@ -164,6 +168,8 @@ namespace StandAloneGFXDKC1
                     address += 0x200;
                 }
                 address += 0x40;
+                // FIX?
+                //address += 0x20;
 
 
 
@@ -182,12 +188,20 @@ namespace StandAloneGFXDKC1
 
                 if ((i + 1) % 16 == 0)
                 {
-                    address += 0x100;
+                    // FIX??
+                    //address += 0x200;
                 }
                 address += 0x20;
 
 
             }
+
+
+            // Loop through group2 tiles starting at proper address
+            address = sizeOfNonTiles + (byte4 * 0x20);
+            address &= (address > 0x7fffff ? 0x3fffff : 0xffffff);
+
+
             // Loop through group2 tiles
             for (int i = 0; byte3 - i != 0; i++)
             {
@@ -202,7 +216,8 @@ namespace StandAloneGFXDKC1
 
                 if ((i + 1) % 16 == 0)
                 {
-                    address += 0x100;
+                    // FIX??
+                    //address += 0x200;
                 }
                 address += 0x20;
 
@@ -222,6 +237,8 @@ namespace StandAloneGFXDKC1
             using (Graphics gr = Graphics.FromImage(bmp))
             {
                 gr.Clear(Color.Transparent);
+                //gr.FillRectangle(new SolidBrush(Color.FromArgb(69, 42, 69)), 0, 0, 256, 256);
+
 
                 //gr.DrawImage(DecodeChar(address, 4, palette), index.x, index.y);
                 foreach (var index in cTR)
@@ -413,6 +430,17 @@ namespace StandAloneGFXDKC1
             int size = 8 + (b0 * 2) + (b1 * 2) + (b3 * 2) + (b5 << 5) + (b7 * 0x20);
 
             return rom.Skip(offsetOG).Take(size).ToArray();
+        }
+        public List<byte[]> FillCharData(int address, int b0, int b1, int b3)
+        {
+            List<byte[]> @return = new List<byte[]>();
+            if (b0 >= 8)
+            {
+
+            }
+            int x = 0;
+
+            return @return;
         }
 
     }

@@ -22,8 +22,9 @@ namespace StandAloneGFXDKC1
             penY;
         Pen p;
         Bitmap copy;
-        bool isPen, isDrawLine, isFloodFill;
+        bool isPen, isDrawLine, isFloodFill, isReplace, isReplaceAll;
         Dictionary<Color, int> indexByColor;
+        Color colorToReplace;
         private void TileArtInit()
         {
             pictureBox_tilePalette.Image = DrawImagePalette();
@@ -178,6 +179,8 @@ namespace StandAloneGFXDKC1
             isPen = false;
             isDrawLine = false;
             isFloodFill = false;
+            isReplace = false;
+            isReplaceAll = false;
 
             switch (send.Name)
             {
@@ -190,6 +193,16 @@ namespace StandAloneGFXDKC1
                 case "button_fill":
                     isFloodFill = true;
                     break;
+                case "button_replaceAll":
+                    isReplace = true;
+                    MessageBox.Show("Select a color in the image to replace with the selected color");
+                    break;
+                case "button_replaceGlobal":
+                    isReplaceAll = true;
+                    MessageBox.Show("Select a color in the image to replace with the selected color");
+                    break;
+
+                    break;
                 default:
                     break;
             }
@@ -200,7 +213,7 @@ namespace StandAloneGFXDKC1
         private void pictureBox_tilePlayground_MouseDown(object sender, MouseEventArgs e)
         {
             // If not drawing
-            if (!isPen && !isDrawLine && !isFloodFill)
+            if (!isPen && !isDrawLine && !isFloodFill && !isReplace && !isReplaceAll)
             {
                 var selected = ((Bitmap)pictureBox_tilePlayground.Image).GetPixel(e.X, e.Y);
                 var temp = currentPalette.IndexOf(selected);
@@ -237,8 +250,70 @@ namespace StandAloneGFXDKC1
 
                 ShowGrid(EnlargeImage(editedImage));
             }
+            if (isReplace)
+            {
+                int x = e.X / size,
+                    y = e.Y / size;
+                Color toReplace = editedImage.GetPixel(x, y);
+
+                // Loop through entire image
+                for (int h = 0; h < editedImage.Height; h++)
+                {
+                    for (int w = 0; w < editedImage.Width; w++)
+                    {
+                        if (toReplace == editedImage.GetPixel(w, h))
+                        {
+                            editedImage.SetPixel(w, h, selected);
+                        }
+                    }
+                }
+
+
+                ShowGrid(EnlargeImage(editedImage));
+
+            }
+            if (isReplaceAll)
+            {
+                int x = e.X / size,
+                    y = e.Y / size;
+                Color toReplace = editedImage.GetPixel(x, y);
+                ReplaceAll(editedImage, toReplace);
+                button_applyTiles_Click(0, new EventArgs());
+
+                for (int i = 0; i < listBox_i_tiles.Items.Count; i++)
+                {
+                    listBox_i_tiles.SelectedIndex = i;
+                    ReplaceAll(editedImage, toReplace);
+                    button_applyTiles_Click(0, new EventArgs());
+
+                }
+                listBox_i_tiles.SelectedIndex = 0;
+
+
+
+                ShowGrid(EnlargeImage(editedImage));
+
+            }
         }
 
+        private Bitmap ReplaceAll(Bitmap bmp, Color clr)
+        {
+            // Loop through entire image
+            for (int h = 0; h < bmp.Height; h++)
+            {
+                for (int w = 0; w < bmp.Width; w++)
+                {
+                    if (clr == bmp.GetPixel(w, h))
+                    {
+                        bmp.SetPixel(w, h, selected);
+                    }
+                }
+            }
+
+
+
+            return bmp;
+        } 
         private void pictureBox_tilePlayground_MouseMove(object sender, MouseEventArgs e)
         {
             if (isDrawing)
@@ -385,6 +460,8 @@ namespace StandAloneGFXDKC1
             isPen = false;
             isDrawLine = false;
             isFloodFill = false;
+            isReplace = false;
+            isReplaceAll = false;
 
         }
 
@@ -439,6 +516,7 @@ namespace StandAloneGFXDKC1
 
             rom.ReadFromSpriteHeader(0, currentPalette, true);
             RedrawPreview();
+            
             //TileInit();
             //TileArtInit();
         
@@ -470,6 +548,7 @@ namespace StandAloneGFXDKC1
                     for (int k = 0; k < 8; k++)
                     {
                         Color thiscolor = bmp.GetPixel(k, (j >> 1));
+                        thiscolor = SimplifiedColor(thiscolor, Color.FromArgb(255,248,248,248));
                         int index = GetIndexInPalette(thiscolor);
                         if (index == -1)
                         {
@@ -504,5 +583,16 @@ namespace StandAloneGFXDKC1
             int index = currentPalette.IndexOf(color);
             return index;
         }
+
+        private void button_replaceAll_Click(object sender, EventArgs e)
+        {
+            timer_replace.Enabled = true;
+            MessageBox.Show("Select a color in the image to replace");
+        }
+        private void timer_replace_Tick(object sender, EventArgs e)
+        {
+
+        }
+
     }
 }

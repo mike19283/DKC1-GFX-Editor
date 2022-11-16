@@ -47,13 +47,15 @@ namespace StandAloneGFXDKC1
             sd.RefreshRbs();
             //Loading my file and displaying all my content.
             backupRom = File.ReadAllBytes(path);
+            backupRom = backupRom.Skip(backupRom.Length == 0x400200 ? 0x200 : 0).ToArray();
+
 
             // As seen in header
             var gameTitle = new ArraySegment<byte>(backupRom, 0XFFC0, 21).ToArray();
             gameTitleAsString = GetTitleFromHeader(gameTitle);
             // Verify checksum
             //if (GetChecksum(backupRom) == 0x163e1202.ToString("x"))
-            if (backupRom[0xffdb] == 0 && (VerifyROM(gameTitle, "DONKEY KONG COUNTRY  ")))
+            if (backupRom[0xffdb] == 0 && (VerifyROM(gameTitle, "DONKEY KONG COUNTRY  ") || VerifyROM(gameTitle, "DKC Hack   [DKC v1.0]")))
             {
                 // Copy backup to main
                 RestoreFromBackup();
@@ -98,6 +100,14 @@ namespace StandAloneGFXDKC1
                 (rom[address++] << 0) |
                 (rom[address++] << 8));
         }
+        public int Read16Signed(Int32 address)
+        {
+            address &= (address > 0x7fffff ? 0x3fffff : 0xffffff);
+            int @return = (UInt16)(
+                (rom[address++] << 0) |
+                (rom[address++] << 8));
+            return ConvertToSNESInt(@return);
+        }
         public UInt16 Read16(ref Int32 address)
         {
             address &= (address > 0x7fffff ? 0x3fffff : 0xffffff);
@@ -113,6 +123,25 @@ namespace StandAloneGFXDKC1
                 (rom[address++] << 8) |
                 (rom[address++] << 16));
         }
+        public Int32 Read32(Int32 address)
+        {
+            address &= (address > 0x7fffff ? 0x3fffff : 0xffffff);
+            return (UInt16)(
+                (rom[address++] << 0) |
+                (rom[address++] << 8) |
+                (rom[address++] << 16) |
+                (rom[address++] << 24));
+        }
+        public byte[] ReadSubArray(Int32 address, int size)
+        {
+            //address &= 0x3fffff;
+            address &= (address > 0x7fffff ? 0x3fffff : 0xffffff);
+            var temp = rom.Skip(address).Take(size).ToArray();
+            List<byte> arr = new List<byte>();
+            arr.AddRange(temp);
+            return arr.ToArray();
+        }
+
         public Int32 Read24(Int32 address)
         {
             address &= (address > 0x7fffff ? 0x3fffff : 0xffffff);
@@ -121,7 +150,18 @@ namespace StandAloneGFXDKC1
                 (rom[address++] << 8) |
                 (rom[address++] << 16));
         }
+        private int ConvertToSNESInt(int toConvert)
+        {
+            return toConvert >= 0x8000 ? (0x10000 - toConvert) * -1 : toConvert;
+        }
+
         public void Write8(ref Int32 address, Int32 value)
+        {
+            address &= (address > 0x7fffff ? 0x3fffff : 0xffffff);
+            // Actually write
+            rom[address++] = (byte)(value >> 0);
+        }
+        public void Write8(Int32 address, Int32 value)
         {
             address &= (address > 0x7fffff ? 0x3fffff : 0xffffff);
             // Actually write
@@ -140,6 +180,14 @@ namespace StandAloneGFXDKC1
             // Actually write
             rom[address++] = (byte)(value >> 0);
             rom[address++] = (byte)(value >> 8);
+        }
+        public void WriteArr (int address, byte[] arr)
+        {
+            address &= (address > 0x7fffff ? 0x3fffff : 0xffffff);
+            foreach (var b in arr)
+            {
+                rom[address++] = b;
+            }
         }
 
         public void WriteString(Int32 address, string str)
@@ -205,6 +253,7 @@ namespace StandAloneGFXDKC1
                 saved = true;
 
                 sd.Write("File", "Path", fileName);
+                sd.SaveRbs();
 
                 MessageBox.Show("Saved!");
 

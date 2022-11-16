@@ -13,6 +13,7 @@ namespace StandAloneGFXDKC1
         private void comboBox_loadPalette_SelectedIndexChanged(object sender, EventArgs e)
         {
             palKey = comboBox_loadPalette.SelectedItem.ToString();
+
             // Write address
             textBox_addressPal.Text = (rom.palettePointers[palKey] | 0xb00000).ToString("X");
         }
@@ -26,8 +27,12 @@ namespace StandAloneGFXDKC1
         private void button_i_loadImage_Click(object sender, EventArgs e)
         {
             int index = Convert.ToInt32(textBox_i_image.Text, 16);
+            if (index == 0x2320)
+            {
 
-            int offset = rom.Read24(0xbbcc9c + index);
+            }
+
+            int offset = rom.Read24(gfxArray + index);
             ReadHeader(offset);
             textBox_i_address.Text = offset.ToString("X6");
 
@@ -71,8 +76,10 @@ namespace StandAloneGFXDKC1
             textBox_ih_6.Text = b6.ToString("X");
             textBox_iH_7.Text = b7.ToString("X");
 
+            headerLength = 8 + (b0 * 2) + (b1 * 2) + (b3 * 2);
             // Display size of data
-            int size = 8 + (b0 * 2) + (b1 * 2) + (b3 * 2) + (b5 << 5) + (b7 * 0x20);
+            int size = headerLength + (b5 << 5) + (b7 * 0x20);
+
             textBox_iH_total.Text = size.ToString("X");
 
 
@@ -108,7 +115,7 @@ namespace StandAloneGFXDKC1
             int current = Convert.ToInt32(textBox_i_image.Text, 16);
             int next = current + 4;
             // Is the next pointer 0?
-            if (!(rom.Read16(0xbbcc9c + next + 0) == 0 && rom.Read16(0xbbcc9c + next + 1) == 0))
+            if (!(rom.Read16(gfxArray + next + 0) == 0 && rom.Read16(gfxArray + next + 1) == 0))
             {
                 textBox_i_image.Text = next.ToString("X");
                 // Draw image again
@@ -144,7 +151,7 @@ namespace StandAloneGFXDKC1
 
             int index = Convert.ToInt32(textBox_i_image.Text, 16);
 
-            int offset = rom.Read24(0xbbcc9c + index);
+            int offset = rom.Read24(gfxArray + index);
             textBox_i_address.Text = offset.ToString("X6");
 
             Bitmap bmp = rom.ReadFromSpriteHeader(offset, palette[0], true);

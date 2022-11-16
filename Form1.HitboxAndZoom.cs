@@ -20,6 +20,8 @@ namespace StandAloneGFXDKC1
             width_hitbox = rom.Read16(offset + 4);
             height_hitbox = rom.Read16(offset + 6);
 
+            var pointer = offset & 0xffff;
+            textBox_hitboxPointer.Text = pointer.ToString("X4");
             textBox_hitbox_x.Text = x_hitbox.ToString("X4");
             textBox_hitbox_y.Text = y_hitbox.ToString("X4");
             textBox_hitbox_width.Text = width_hitbox.ToString("X4");
@@ -43,10 +45,8 @@ namespace StandAloneGFXDKC1
 
             button_i_loadImage_Click(sender, e);
 
-            MessageBox.Show("Changed!");
-
         }
-        private int ConvertToNegative(int toConvert)
+        private int ConvertToSNESInt(int toConvert)
         {
             return toConvert >= 0x8000 ? (0x10000 - toConvert) * -1 : toConvert;
         }
@@ -55,8 +55,8 @@ namespace StandAloneGFXDKC1
             using (Graphics g = Graphics.FromImage(bmp))
             {
                 g.DrawRectangle(new Pen(Color.Black),
-                    +bmp.Width / 2 + ConvertToNegative(x_hitbox),
-                    +bmp.Height / 2 + ConvertToNegative(y_hitbox),
+                    +bmp.Width / 2 + ConvertToSNESInt(x_hitbox),
+                    +bmp.Height / 2 + ConvertToSNESInt(y_hitbox),
                     +width_hitbox,
                     +height_hitbox);
             }
@@ -96,6 +96,34 @@ namespace StandAloneGFXDKC1
                     break;
             }
         }
+
+        private void button_exportHitbox_Click(object sender, EventArgs e)
+        {
+            int hitA = Convert.ToInt32(textBox_hitbox_address.Text, 16);
+            var arr = rom.ReadSubArray(hitA, 8);
+            SaveFileDialog s = new SaveFileDialog();
+            s.Filter = "Bin (*.bin)|*.bin";
+
+            if (s.ShowDialog() == DialogResult.OK)
+            {
+                System.IO.File.WriteAllBytes(s.FileName, arr);
+                MessageBox.Show("Exported!");
+            }
+
+        }
+        private void button_hitboxSetPointer_Click(object sender, EventArgs e)
+        {
+            var image = Convert.ToInt32(textBox_i_image.Text, 16);
+            var pointer = Convert.ToInt32(textBox_hitboxPointer.Text, 16);
+            // Base hitbox address
+            // bb8000
+            rom.Write16(0xbb8000 + image / 2, pointer);
+            LoadHitbox(image /2);
+            button_i_loadImage_Click(0, new EventArgs());
+
+
+        }
+
 
     }
 }

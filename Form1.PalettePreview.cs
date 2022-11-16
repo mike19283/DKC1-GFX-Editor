@@ -18,7 +18,7 @@ namespace StandAloneGFXDKC1
             int address = 0;
 
             // Which index are we looking at?
-            int index = 0xbbcc9c + current;
+            int index = gfxArray + current;
 
             // Address of index
             address = (rom.Read8(index + 2) << 16) | rom.Read16(index);
@@ -52,7 +52,7 @@ namespace StandAloneGFXDKC1
         {
             int current = Convert.ToInt32(textBox_p_imgToLoad.Text, 16);
             int next = current + 4;
-            if (rom.Read16(0xbbcc9c + next + 1) != 0)
+            if (rom.Read16(gfxArray + next + 1) != 0)
             {
                 textBox_p_imgToLoad.Text = next.ToString("X");
                 button_p_loadGFX_Click(sender, e);

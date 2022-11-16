@@ -11,9 +11,13 @@ namespace StandAloneGFXDKC1
         public Dictionary<string, int> palettePointers = new Dictionary<string, int>() 
         {
             ["Donkey Kong 1P"] = 0x3C849A,
+            ["Donkey Kong 1P (dimmed back-up)"] = 0x3C84B8,
             ["Donkey Kong 2P"] = 0x3C84D6,
+            ["Donkey Kong 2P (dimmed back-up)"] = 0x3C84F4,
             ["Diddy Kong 1P"] = 0x3C8422,
+            ["Diddy Kong 1P (dimmed back-up)"] = 0x3C8440,
             ["Diddy Kong 2P"] = 0x3C845E,
+            ["Diddy Kong 2P (dimmed back-up)"] = 0x3C847C,
             ["dirt patch, bonus wall"] = 0x3C8226,
             ["DK Island seen from Gang-Plank Galleon"] = 0x3C8262,
             ["Cannonball"] = 0x3C829E,

@@ -8,7 +8,7 @@ namespace StandAloneGFXDKC1
 {
     static class Version
     {
-        private static string versionString = "Version 0.050";
+        private static string versionString = "Version 0.057";
         private static string linkString = "https://pastebin.com/B1dwHzQS";
         public static string downloadLink;
         public static bool currentVersion;

@@ -58,6 +58,25 @@ namespace StandAloneGFXDKC1
             RedrawPreview();
 
         }
+        private int Convert8BitToSigned(int num) => num >= 0x80 ? (0x100 - num) * -1 : num;
+        private void button_i_relative_Click(object sender, EventArgs e)
+        {
+
+            int length = listBox_i_tiles.Items.Count;
+            for (int i = 0; i < length; i++)
+            {
+                int x = Convert8BitToSigned((int)numericUpDown_relativeX.Value);
+                int y = Convert8BitToSigned((int)numericUpDown_relativeY.Value);
+                listBox_i_tiles.SelectedIndex = i;
+                var thisTile = rom.tiles[listBox_i_tiles.SelectedIndex];
+                x += thisTile.x;
+                y += thisTile.y;
+                textBox_x.Text = x.ToString("X2");
+                textBox_y.Text = y.ToString("X2");
+                button_i_tileWrite_Click(0, new EventArgs());
+            }
+
+        }
 
     }
 }

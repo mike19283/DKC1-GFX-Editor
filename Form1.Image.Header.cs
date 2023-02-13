@@ -43,6 +43,26 @@ namespace StandAloneGFXDKC1
             Bitmap bmp = rom.ReadFromSpriteHeader(offset, palette[0]);
             if (checkBox_hitbox.Checked)
                 bmp = DrawHitbox(bmp);
+            if (checkBox_charBorder.Checked)
+            {
+                using (Graphics g = Graphics.FromImage(bmp))
+                {
+                    foreach (var tile in rom.tiles)
+                    {
+                        int x = tile.x;
+                        int y = tile.y;
+                        if (tile.type == "2x2")
+                        {
+                            g.DrawRectangle(new Pen(Color.Green), x, y, 16, 16);
+                        }
+                        else
+                        {
+                            g.DrawRectangle(new Pen(Color.Green), x, y, 8, 8);
+                        }
+                    }
+                }
+            }
+
             pictureBox_i_preview.Image = bmp;
             listBox_i_tiles.Items.Clear();
             listBox_i_tiles.Items.AddRange(rom.tiles.ToArray());
@@ -157,7 +177,26 @@ namespace StandAloneGFXDKC1
             Bitmap bmp = rom.ReadFromSpriteHeader(offset, palette[0], true);
             if (checkBox_hitbox.Checked)
                 bmp = DrawHitbox(bmp);
-            pictureBox_i_preview.Image = bmp;
+            if (checkBox_charBorder.Checked)
+            {
+                using (Graphics g = Graphics.FromImage(bmp))
+                {
+                    foreach (var tile in rom.tiles)
+                    {
+                        int x = tile.x;
+                        int y = tile.y;
+                        if (tile.type == "2x2")
+                        {
+                            g.DrawRectangle(new Pen(Color.Green), x, y, 16, 16);
+                        }
+                        else
+                        {
+                            g.DrawRectangle(new Pen(Color.Green), x, y, 8, 8);
+                        }
+                    }
+                }
+            }
+                pictureBox_i_preview.Image = bmp;
 
         }
         private void button_header_write_Click(object sender, EventArgs e)

@@ -36,10 +36,14 @@ namespace StandAloneGFXDKC1
         int index;
         bool single;
         int headerLength;
+        CreateSpriteSheet spriteSheet;
+        Keys keyDown;
+
         public Form1()
         {
             InitializeComponent();
-            Version.OnLoad();
+            // Pastebin format changed
+            //Version.OnLoad();
             rom = new ROM(sd);
 
             try
@@ -52,6 +56,7 @@ namespace StandAloneGFXDKC1
             catch (Exception ex)
             {
                 //MessageBox.Show(ex.Message);
+                editToolStripMenuItem.Enabled = false;
             }
             
 
@@ -186,14 +191,28 @@ namespace StandAloneGFXDKC1
         private void AddGlobalHotkeyToAll(Control ctrl)
         {
             ctrl.KeyDown += new System.Windows.Forms.KeyEventHandler(GlobalHotkey);
+            ctrl.KeyUp += new System.Windows.Forms.KeyEventHandler(GlobalHotkeyKeyUp);
             foreach (Control child in ctrl.Controls)
             {
                 AddGlobalHotkeyToAll(child);
             }
 
         }
+
+        private void GlobalHotkeyKeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == keyDown)
+            {
+                keyDown = Keys.Home;
+            }
+        }
+
         private void GlobalHotkey(object  sender, KeyEventArgs e)
         {
+            if (e.KeyCode == keyDown)
+            {
+                return;
+            }
             // Is our timer active?
             if (timer > 0)
             {
@@ -274,6 +293,22 @@ namespace StandAloneGFXDKC1
                 timer = timerConstant;
                 PasteCustom();
             }
+            if (e.KeyCode == Keys.F7 && tabControl_sprites.SelectedIndex == 0 && spriteSheet != null)
+            {
+
+                keyDown = e.KeyCode;
+                int current = Convert.ToInt32(textBox_p_imgToLoad.Text, 16);
+                spriteSheet.AddToList(current);
+
+            }
+            if (e.KeyCode == Keys.F8 && tabControl_sprites.SelectedIndex == 0 && spriteSheet != null)
+            {
+
+                keyDown = e.KeyCode;
+                int current = Convert.ToInt32(textBox_p_imgToLoad.Text, 16);
+                spriteSheet.AddStartToList(current);
+
+            }
 
         }
 
@@ -284,6 +319,7 @@ namespace StandAloneGFXDKC1
 
         private void timer_100ticks_Tick(object sender, EventArgs e)
         {
+            editToolStripMenuItem.Enabled = rom.loadROMSuccess;
             if (timer > 0)
             {
                 timer--;
@@ -425,6 +461,10 @@ namespace StandAloneGFXDKC1
 
         private void button_animationPaste_Click(object sender, EventArgs e)
         {
+            PasteCustom();
+            return;
+
+
             int pasteIndex = listBox_animation.SelectedIndex;
             animation.animationIndices.InsertRange(pasteIndex, copied);
             RefreshAnimationListbox();
@@ -560,8 +600,21 @@ namespace StandAloneGFXDKC1
             }
             //button_i_writeImage_Click(0, new EventArgs());
         }
-        
+
         #endregion
+
+        private void button_createSpriteSheet_Click(object sender, EventArgs e)
+        {
+            int current = Convert.ToInt32(textBox_p_imgToLoad.Text, 16);
+            spriteSheet = new CreateSpriteSheet(current, rom, palette[0]);
+            spriteSheet.Show();
+            this.SetTopLevel(true);
+        }
+
+        private void checkBox_charBorder_CheckedChanged(object sender, EventArgs e)
+        {
+            RedrawPreview();
+        }
 
     }
 

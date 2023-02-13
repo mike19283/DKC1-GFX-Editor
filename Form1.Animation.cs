@@ -21,6 +21,7 @@ namespace StandAloneGFXDKC1
         // 0xbe8572
         private void button_setBase_Click(object sender, EventArgs e)
         {
+
             try
             {
                 
@@ -190,6 +191,10 @@ namespace StandAloneGFXDKC1
             {
                 var animationIndex = (AnimationIndex)listBox_animation.Items[i];
                 animationIndex.WriteIndexToROM(ref offset);
+                if (animationIndex.ToString() == "80")
+                {
+                    break;
+                }
 
             }
 
@@ -352,12 +357,23 @@ namespace StandAloneGFXDKC1
             listBox_animation.Items.AddRange(animation.animationIndices.ToArray());
             listBox_animation.SelectedIndex = listindex;
         }
-
+        string animationCopy = "Copy";
         private void button_animationCopy_Click(object sender, EventArgs e)
         {
-            var item = (AnimationIndex)listBox_animation.SelectedItem;
-            copied.Add(item);
+            string str = "";
+            for (int i = 0; i < listBox_animation.Items.Count; i++)
+            {
+                var item = (AnimationIndex)listBox_animation.Items[i];
+                //copied.Add(item);
 
+                str += item.ToString();
+                str += "&";
+            }
+            Clipboard.Clear();
+            Clipboard.SetText(str);
+
+            button_animationCopy.Text = animationCopy == "Copy" ? "Copy!" : "Copy";
+            animationCopy = animationCopy == "Copy" ? "Copy!" : "Copy";
         }
 
         private void button_animationClear_Click(object sender, EventArgs e)
@@ -389,7 +405,7 @@ namespace StandAloneGFXDKC1
             var index = (AnimationIndex)listBox_animation.SelectedItem;
             if (index.imgPointer == 0)
             {
-                return;
+                //return;
             }
             if (e.Button == MouseButtons.Right)
             {
@@ -417,13 +433,14 @@ namespace StandAloneGFXDKC1
         private void PasteCustom()
         {
             var clippy = Clipboard.GetText();
-            var spl = clippy.Split('\n');
-            for (int i = spl.Length - 1; i >= 0; i--)
+            var spl = clippy.Split('&');
+            for (int i = 0; i < spl.Length - 1; i++)
             {
                 button_animationInsert_Click(0, new EventArgs());
                 textBox_frameData.Refresh();
-                PasteString(spl[i]);
-
+                textBox_frameData.Text = spl[i];
+                button_animationApply_Click(0, new EventArgs());
+                listBox_animation.SelectedIndex++;
             }
         }
 

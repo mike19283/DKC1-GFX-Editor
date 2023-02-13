@@ -50,6 +50,7 @@
             this.tabControl2 = new System.Windows.Forms.TabControl();
             this.tabPage_i_preview = new System.Windows.Forms.TabPage();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.checkBox_charBorder = new System.Windows.Forms.CheckBox();
             this.comboBox_i_palette = new System.Windows.Forms.ComboBox();
             this.checkBox_hitbox = new System.Windows.Forms.CheckBox();
             this.panel2 = new System.Windows.Forms.Panel();
@@ -160,7 +161,7 @@
             this.panel_paletteEdit = new System.Windows.Forms.Panel();
             this.groupBox_GraphicsPreviewPal = new System.Windows.Forms.GroupBox();
             this.panel_p_ObjectImage = new System.Windows.Forms.Panel();
-            this.button_exportAll = new System.Windows.Forms.Button();
+            this.button_createSpriteSheet = new System.Windows.Forms.Button();
             this.button_exportImage = new System.Windows.Forms.Button();
             this.pictureBox_p_ObjectImage = new System.Windows.Forms.PictureBox();
             this.comboBox_p_zoom = new System.Windows.Forms.ComboBox();
@@ -343,6 +344,7 @@
             this.checkForUpdateToolStripMenuItem.Name = "checkForUpdateToolStripMenuItem";
             this.checkForUpdateToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.checkForUpdateToolStripMenuItem.Text = "Check for Update";
+            this.checkForUpdateToolStripMenuItem.Visible = false;
             this.checkForUpdateToolStripMenuItem.Click += new System.EventHandler(this.checkForUpdateToolStripMenuItem_Click);
             // 
             // exitToolStripMenuItem
@@ -366,26 +368,26 @@
             // previousImageF3ToolStripMenuItem
             // 
             this.previousImageF3ToolStripMenuItem.Name = "previousImageF3ToolStripMenuItem";
-            this.previousImageF3ToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
+            this.previousImageF3ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.previousImageF3ToolStripMenuItem.Text = "Previous Image F3";
             // 
             // nextImageF4ToolStripMenuItem
             // 
             this.nextImageF4ToolStripMenuItem.Name = "nextImageF4ToolStripMenuItem";
-            this.nextImageF4ToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
+            this.nextImageF4ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.nextImageF4ToolStripMenuItem.Text = "Next Image F4";
             // 
             // previousPaletteFToolStripMenuItem
             // 
             this.previousPaletteFToolStripMenuItem.Name = "previousPaletteFToolStripMenuItem";
-            this.previousPaletteFToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
+            this.previousPaletteFToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.previousPaletteFToolStripMenuItem.Text = "Previous Palette F5";
             this.previousPaletteFToolStripMenuItem.Click += new System.EventHandler(this.button_previousPal_Click);
             // 
             // nextPaletteF6ToolStripMenuItem
             // 
             this.nextPaletteF6ToolStripMenuItem.Name = "nextPaletteF6ToolStripMenuItem";
-            this.nextPaletteF6ToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
+            this.nextPaletteF6ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.nextPaletteF6ToolStripMenuItem.Text = "Next Palette F6";
             this.nextPaletteF6ToolStripMenuItem.Click += new System.EventHandler(this.button_nextPal_Click);
             // 
@@ -396,6 +398,7 @@
             this.miscToolStripMenuItem.Name = "miscToolStripMenuItem";
             this.miscToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
             this.miscToolStripMenuItem.Text = "Misc";
+            this.miscToolStripMenuItem.Visible = false;
             // 
             // copyAllToolStripMenuItem
             // 
@@ -449,6 +452,7 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.checkBox_charBorder);
             this.groupBox1.Controls.Add(this.comboBox_i_palette);
             this.groupBox1.Controls.Add(this.checkBox_hitbox);
             this.groupBox1.Controls.Add(this.panel2);
@@ -464,6 +468,17 @@
             this.groupBox1.TabIndex = 3;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Graphics Preview";
+            // 
+            // checkBox_charBorder
+            // 
+            this.checkBox_charBorder.AutoSize = true;
+            this.checkBox_charBorder.Location = new System.Drawing.Point(290, 431);
+            this.checkBox_charBorder.Name = "checkBox_charBorder";
+            this.checkBox_charBorder.Size = new System.Drawing.Size(91, 17);
+            this.checkBox_charBorder.TabIndex = 16;
+            this.checkBox_charBorder.Text = "Sprite borders";
+            this.checkBox_charBorder.UseVisualStyleBackColor = true;
+            this.checkBox_charBorder.CheckedChanged += new System.EventHandler(this.checkBox_charBorder_CheckedChanged);
             // 
             // comboBox_i_palette
             // 
@@ -795,7 +810,7 @@
             this.checkBox_exportHeader.AutoSize = true;
             this.checkBox_exportHeader.Checked = true;
             this.checkBox_exportHeader.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBox_exportHeader.Location = new System.Drawing.Point(194, 324);
+            this.checkBox_exportHeader.Location = new System.Drawing.Point(183, 324);
             this.checkBox_exportHeader.Name = "checkBox_exportHeader";
             this.checkBox_exportHeader.Size = new System.Drawing.Size(61, 17);
             this.checkBox_exportHeader.TabIndex = 23;
@@ -804,17 +819,18 @@
             // 
             // button_i_importBulk
             // 
-            this.button_i_importBulk.Location = new System.Drawing.Point(18, 324);
+            this.button_i_importBulk.Location = new System.Drawing.Point(7, 324);
             this.button_i_importBulk.Name = "button_i_importBulk";
             this.button_i_importBulk.Size = new System.Drawing.Size(75, 23);
             this.button_i_importBulk.TabIndex = 22;
             this.button_i_importBulk.Text = "Import Bulk";
             this.button_i_importBulk.UseVisualStyleBackColor = true;
+            this.button_i_importBulk.Visible = false;
             this.button_i_importBulk.Click += new System.EventHandler(this.button_i_importBulk_Click);
             // 
             // button_import
             // 
-            this.button_import.Location = new System.Drawing.Point(101, 324);
+            this.button_import.Location = new System.Drawing.Point(90, 324);
             this.button_import.Name = "button_import";
             this.button_import.Size = new System.Drawing.Size(75, 23);
             this.button_import.TabIndex = 21;
@@ -878,7 +894,7 @@
             // 
             // textBox_ih_6
             // 
-            this.textBox_ih_6.Location = new System.Drawing.Point(275, 216);
+            this.textBox_ih_6.Location = new System.Drawing.Point(275, 204);
             this.textBox_ih_6.MaxLength = 4;
             this.textBox_ih_6.Name = "textBox_ih_6";
             this.textBox_ih_6.Size = new System.Drawing.Size(52, 20);
@@ -918,7 +934,7 @@
             // 
             // textBox_iH_7
             // 
-            this.textBox_iH_7.Location = new System.Drawing.Point(275, 241);
+            this.textBox_iH_7.Location = new System.Drawing.Point(275, 229);
             this.textBox_iH_7.MaxLength = 4;
             this.textBox_iH_7.Name = "textBox_iH_7";
             this.textBox_iH_7.Size = new System.Drawing.Size(52, 20);
@@ -973,16 +989,16 @@
             // label16
             // 
             this.label16.AutoSize = true;
-            this.label16.Location = new System.Drawing.Point(21, 176);
+            this.label16.Location = new System.Drawing.Point(21, 179);
             this.label16.Name = "label16";
-            this.label16.Size = new System.Drawing.Size(140, 26);
+            this.label16.Size = new System.Drawing.Size(132, 13);
             this.label16.TabIndex = 3;
-            this.label16.Text = "Size to send to vram shifted \r\n5 times (dma group 1)";
+            this.label16.Text = "# of chars in DMA group 1";
             // 
             // label15
             // 
             this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(21, 216);
+            this.label15.Location = new System.Drawing.Point(21, 204);
             this.label15.Name = "label15";
             this.label15.Size = new System.Drawing.Size(192, 13);
             this.label15.TabIndex = 2;
@@ -991,7 +1007,7 @@
             // label14
             // 
             this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(21, 241);
+            this.label14.Location = new System.Drawing.Point(21, 229);
             this.label14.Name = "label14";
             this.label14.Size = new System.Drawing.Size(178, 13);
             this.label14.TabIndex = 1;
@@ -1597,7 +1613,7 @@
             // panel_p_ObjectImage
             // 
             this.panel_p_ObjectImage.AutoScroll = true;
-            this.panel_p_ObjectImage.Controls.Add(this.button_exportAll);
+            this.panel_p_ObjectImage.Controls.Add(this.button_createSpriteSheet);
             this.panel_p_ObjectImage.Controls.Add(this.button_exportImage);
             this.panel_p_ObjectImage.Controls.Add(this.pictureBox_p_ObjectImage);
             this.panel_p_ObjectImage.Location = new System.Drawing.Point(10, 18);
@@ -1605,16 +1621,15 @@
             this.panel_p_ObjectImage.Size = new System.Drawing.Size(418, 402);
             this.panel_p_ObjectImage.TabIndex = 13;
             // 
-            // button_exportAll
+            // button_createSpriteSheet
             // 
-            this.button_exportAll.Enabled = false;
-            this.button_exportAll.Location = new System.Drawing.Point(337, 367);
-            this.button_exportAll.Name = "button_exportAll";
-            this.button_exportAll.Size = new System.Drawing.Size(75, 23);
-            this.button_exportAll.TabIndex = 2;
-            this.button_exportAll.Text = "Export all";
-            this.button_exportAll.UseVisualStyleBackColor = true;
-            this.button_exportAll.Click += new System.EventHandler(this.button_exportAll_Click);
+            this.button_createSpriteSheet.Location = new System.Drawing.Point(337, 333);
+            this.button_createSpriteSheet.Name = "button_createSpriteSheet";
+            this.button_createSpriteSheet.Size = new System.Drawing.Size(75, 57);
+            this.button_createSpriteSheet.TabIndex = 2;
+            this.button_createSpriteSheet.Text = "Create Sprite\r\nSheet\r\n";
+            this.button_createSpriteSheet.UseVisualStyleBackColor = true;
+            this.button_createSpriteSheet.Click += new System.EventHandler(this.button_createSpriteSheet_Click);
             // 
             // button_exportImage
             // 
@@ -2047,6 +2062,7 @@
             this.checkBox_altAnimation.TabIndex = 37;
             this.checkBox_altAnimation.Text = "Alt animation";
             this.checkBox_altAnimation.UseVisualStyleBackColor = true;
+            this.checkBox_altAnimation.Visible = false;
             // 
             // checkBox_animationShowHitbox
             // 
@@ -2067,6 +2083,7 @@
             this.button_animationClear.TabIndex = 35;
             this.button_animationClear.Text = "Copy clear";
             this.button_animationClear.UseVisualStyleBackColor = true;
+            this.button_animationClear.Visible = false;
             this.button_animationClear.Click += new System.EventHandler(this.button_animationClear_Click);
             // 
             // button_animationCopy
@@ -2097,6 +2114,7 @@
             this.button_lut.TabIndex = 32;
             this.button_lut.Text = "Lookup";
             this.button_lut.UseVisualStyleBackColor = true;
+            this.button_lut.Visible = false;
             this.button_lut.Click += new System.EventHandler(this.button_lut_Click);
             // 
             // label43
@@ -2116,6 +2134,7 @@
             this.button_animationLoadFromClipboard.TabIndex = 30;
             this.button_animationLoadFromClipboard.Text = "Load From Clipboard";
             this.button_animationLoadFromClipboard.UseVisualStyleBackColor = true;
+            this.button_animationLoadFromClipboard.Visible = false;
             this.button_animationLoadFromClipboard.Click += new System.EventHandler(this.button_animationLoadFromClipboard_Click);
             // 
             // checkBox_quickEdit
@@ -2136,6 +2155,7 @@
             this.button_animationReplace.TabIndex = 28;
             this.button_animationReplace.Text = "Replace";
             this.button_animationReplace.UseVisualStyleBackColor = true;
+            this.button_animationReplace.Visible = false;
             this.button_animationReplace.Click += new System.EventHandler(this.button_animationReplace_Click);
             // 
             // numericUpDown_animationReplaceTo
@@ -2150,6 +2170,7 @@
             this.numericUpDown_animationReplaceTo.Name = "numericUpDown_animationReplaceTo";
             this.numericUpDown_animationReplaceTo.Size = new System.Drawing.Size(120, 20);
             this.numericUpDown_animationReplaceTo.TabIndex = 27;
+            this.numericUpDown_animationReplaceTo.Visible = false;
             this.numericUpDown_animationReplaceTo.KeyDown += new System.Windows.Forms.KeyEventHandler(this.numericUpDown_animationReplaceTo_KeyDown);
             // 
             // numericUpDown_animationReplaceFrom
@@ -2164,6 +2185,7 @@
             this.numericUpDown_animationReplaceFrom.Name = "numericUpDown_animationReplaceFrom";
             this.numericUpDown_animationReplaceFrom.Size = new System.Drawing.Size(120, 20);
             this.numericUpDown_animationReplaceFrom.TabIndex = 26;
+            this.numericUpDown_animationReplaceFrom.Visible = false;
             // 
             // numericUpDown_animationAddress
             // 
@@ -2186,6 +2208,7 @@
             this.button_animationScanAll.TabIndex = 24;
             this.button_animationScanAll.Text = "Scan All";
             this.button_animationScanAll.UseVisualStyleBackColor = true;
+            this.button_animationScanAll.Visible = false;
             this.button_animationScanAll.Click += new System.EventHandler(this.button_animationScanAll_Click);
             // 
             // label_animationAddress
@@ -2671,7 +2694,7 @@
         private System.Windows.Forms.Button button_export;
         private System.Windows.Forms.Button button_exportHitbox;
         private System.Windows.Forms.Button button_exportImage;
-        private System.Windows.Forms.Button button_exportAll;
+        private System.Windows.Forms.Button button_createSpriteSheet;
         private System.Windows.Forms.Button button_replaceAll;
         private System.Windows.Forms.Timer timer_replace;
         private System.Windows.Forms.Button button_replaceGlobal;
@@ -2733,6 +2756,7 @@
         private System.Windows.Forms.Button button_i_import_load;
         private System.Windows.Forms.Button button_i_import_recolor;
         private System.Windows.Forms.Button button_i_import_apply;
+        private System.Windows.Forms.CheckBox checkBox_charBorder;
     }
 }
 

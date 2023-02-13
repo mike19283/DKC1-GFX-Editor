@@ -48,6 +48,12 @@
   <ItemGroup>
     <Compile Include="Animation.cs" />
     <Compile Include="AnimationIndex.cs" />
+    <Compile Include="CreateSpriteSheet.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CreateSpriteSheet.Designer.cs">
+      <DependentUpon>CreateSpriteSheet.cs</DependentUpon>
+    </Compile>
     <Compile Include="Form1.Animation.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -90,6 +96,9 @@
     <Compile Include="ROM.Sprites.cs" />
     <Compile Include="StoredData.cs" />
     <Compile Include="Version.cs" />
+    <EmbeddedResource Include="CreateSpriteSheet.resx">
+      <DependentUpon>CreateSpriteSheet.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
       <SubType>Designer</SubType>

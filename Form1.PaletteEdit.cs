@@ -186,10 +186,6 @@ namespace StandAloneGFXDKC1
             }
         }
 
-        private void button_exportAll_Click(object sender, EventArgs e)
-        {
-
-        }
 
         private void importPalettebinToolStripMenuItem_Click(object sender, EventArgs e)
         {
